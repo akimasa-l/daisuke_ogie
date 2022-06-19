@@ -18,24 +18,28 @@ function myFunction() {
     }
   }
   // console.log(examples);
-  console.log(Array(create_cloze_tests(words, examples)).join("\n"));
+  console.log(create_cloze_tests(words, examples).join("\n"));
 }
-function* create_cloze_tests(words:string[], examples:string[][]) : Generator<[string,string], void, unknown>{
+function create_cloze_tests(words:string[], examples:string[][]) :[string,string][]{
+  const answer:[string,string][] = [];
   console.log(words);
   const regExp = RegExp(words.join("|"));
   for (const example of examples) {
-    yield [create_cloze_test(example[0],regExp),example[1]]; 
+    const {word,result}=create_cloze_test(example[0],regExp)
+    answer.push([[result,example[1]].join("\n\n"),word]);
   }
+  return answer;
 }
-function create_cloze_test(example:string,regExp:RegExp):string{
-  return Array(create_cloze_test_inner(example,regExp)).join(" ");
-}
-function* create_cloze_test_inner(example:string,regExp:RegExp){
-  for(const word in example.split(" ")) {
+function create_cloze_test(example:string,regExp:RegExp):{word:string,result:string}{
+  const result:string[] = [];
+  let correct_word = "";
+  for(const word of example.split(" ")) {
     if (regExp.test(word)) {
-      yield "( )"
+      result.push("( )")
+      correct_word=word
     }else{
-      yield word
+      result.push(word);
     }
   }
+  return {result:result.join(" "),word:correct_word};
 }
