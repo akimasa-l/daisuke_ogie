@@ -20,7 +20,8 @@ function myFunction() {
   // console.log(examples);
   const result = create_cloze_tests(words, examples).join(";");
   console.log(result);
-  body.appendParagraph(result)
+  // body.appendParagraph(result)
+  GmailApp.sendEmail("61229liu@seiko.ac.jp","ok",result);
 }
 function create_cloze_tests(words:string[], examples:string[][]) :string[]{
   const answer:string[] = [];
