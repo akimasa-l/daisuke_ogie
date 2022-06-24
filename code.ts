@@ -18,12 +18,14 @@ function myFunction() {
     }
   }
   // console.log(examples);
-  console.log(create_cloze_tests(words, examples).join(";"));
+  const result = create_cloze_tests(words, examples).join(";");
+  console.log(result);
+  body.appendParagraph(result)
 }
 function create_cloze_tests(words:string[], examples:string[][]) :string[]{
   const answer:string[] = [];
   console.log(words);
-  const regExp = RegExp(words.join("|"));
+  const regExp = RegExp(words.join("|"),"i");
   for (const example of examples) {
     const {word,result}=create_cloze_test(example[0],regExp)
     answer.push([[result,example[1]].join("\n\n"),word].join(","));
